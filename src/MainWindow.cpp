@@ -15,14 +15,19 @@ MainWindow::MainWindow(json api_data) {
     for(json::iterator i = api_data.begin(); i != api_data.end(); ++i){
         Gtk::TreeModel::Row row = *(m_refTreeModel->append());
         auto country = (*i)["country"].get<std::string>();
-        auto population = (*i)["total"].get<std::uint32_t>();
+        auto population_total = (*i)["total"].get<std::uint32_t>();
+        auto population_male = (*i)["males"].get<std::uint32_t>();
+        auto population_female = (*i)["females"].get<std::uint32_t>();
         row[m_Columns.m_col_country] = country;
-        row[m_Columns.m_col_population] = population;
-        std::cout << country << " " << population << std::endl;
+        row[m_Columns.m_col_population_total] = population_total;
+        row[m_Columns.m_col_population_male] = population_male;
+        row[m_Columns.m_col_population_female] = population_female;
     }
 
     m_TreeView.append_column("Country", m_Columns.m_col_country);
-    m_TreeView.append_column("Population", m_Columns.m_col_population);
+    m_TreeView.append_column("Population (total)", m_Columns.m_col_population_total);
+    m_TreeView.append_column("Population (male)", m_Columns.m_col_population_male);
+    m_TreeView.append_column("Population (female)", m_Columns.m_col_population_male);
     m_ScrolledWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
     m_ScrolledWindow.add(m_TreeView);
     add(m_ScrolledWindow);
