@@ -6,10 +6,13 @@
 #define PROI1_MAINWINDOW_H
 
 #include <gtkmm.h>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 class MainWindow : public Gtk::Window {
 public:
-    MainWindow();
+    MainWindow(json api_data);
+    MainWindow() : MainWindow(json::parse("[]")) {};
 protected:
     class ModelColumns : public Gtk::TreeModel::ColumnRecord {
         public:

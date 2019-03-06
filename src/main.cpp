@@ -2,6 +2,9 @@
 #include <gtkmm.h>
 #include <curl/curl.h>
 #include "../include/MainWindow.h"
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 size_t curl_write(char *contents, size_t size, size_t nmemb, void *userp)
 {
@@ -9,7 +12,7 @@ size_t curl_write(char *contents, size_t size, size_t nmemb, void *userp)
     return size * nmemb;
 }
 
-void get_api_data(){
+json get_api_data(){
     curl_global_init(CURL_GLOBAL_ALL);
 
     CURL* handle = curl_easy_init();
@@ -18,14 +21,15 @@ void get_api_data(){
     curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, curl_write);
     curl_easy_setopt(handle, CURLOPT_WRITEDATA, &buffer);
     curl_easy_perform(handle);
-    std::cout << buffer;
+    std::cout << buffer << std::endl;
+    json j = json::parse(buffer);
+    return j;
 }
 
 int main(int argc, char *argv[]) {
-    get_api_data();
     auto app = Gtk::Application::create(argc, argv, "pl.mrokita.proi1");
 
-    MainWindow window;
+    MainWindow *window = new MainWindow(get_api_data());
 
-    return app->run(window);
+    return app->run(*window);
 }
