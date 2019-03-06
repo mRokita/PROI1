@@ -11,12 +11,18 @@ int main(int argc, char *argv[]) {
     return app->run(window);
 }
 
+
+size_t WriteCallback(char *contents, size_t size, size_t nmemb, void *userp)
+{
+    ((std::string*)userp)->append((char*)contents, size * nmemb);
+    return size * nmemb;
+}
 void get_api_data(){
     curl_global_init(CURL_GLOBAL_ALL);
 
     CURL* handle = curl_easy_init();
     std::string buffer;
     curl_easy_setopt(handle, CURLOPT_URL, "http://api.population.io/1.0/population/2019/aged/18/");
-
-
 }
+
+
