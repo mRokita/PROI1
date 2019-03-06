@@ -25,6 +25,7 @@ protected:
     Gtk::TreeView m_TreeView;
     Glib::RefPtr<Gtk::ListStore> m_refTreeModel;
     ModelColumns m_Columns;
+    Gtk::ScrolledWindow m_ScrolledWindow;
 };
 
 
