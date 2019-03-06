@@ -9,15 +9,16 @@
 #include "../include/MainWindow.h"
 
 MainWindow::MainWindow(json api_data) {
+    std::cout << "MainWindow::create" << std::endl;
     set_default_size(800, 500);
     m_refTreeModel = Gtk::ListStore::create(m_Columns);
     m_TreeView.set_model(m_refTreeModel);
-    for(json::iterator i = api_data.begin(); i != api_data.end(); ++i){
+    for(auto i : api_data){
         Gtk::TreeModel::Row row = *(m_refTreeModel->append());
-        auto country = (*i)["country"].get<std::string>();
-        auto population_total = (*i)["total"].get<std::uint32_t>();
-        auto population_male = (*i)["males"].get<std::uint32_t>();
-        auto population_female = (*i)["females"].get<std::uint32_t>();
+        auto country = i["country"].get<std::string>();
+        auto population_total = i["total"].get<std::uint32_t>();
+        auto population_male = i["males"].get<std::uint32_t>();
+        auto population_female = i["females"].get<std::uint32_t>();
         row[m_Columns.m_col_country] = country;
         row[m_Columns.m_col_population_total] = population_total;
         row[m_Columns.m_col_population_male] = population_male;

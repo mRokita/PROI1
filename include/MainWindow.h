@@ -13,8 +13,8 @@ using json = nlohmann::json;
 class MainWindow : public Gtk::Window {
 public:
     explicit MainWindow(json api_data);
-    ~MainWindow(){ std::cout << "ModelColumns::destroy" << std::endl;}
     MainWindow() : MainWindow(json::parse("[]")) {};
+    ~MainWindow() { std::cout << "MainWindow::destroy" << std::endl;}
 protected:
     class ModelColumns : public Gtk::TreeModel::ColumnRecord {
     public:
@@ -25,7 +25,7 @@ protected:
             add(m_col_population_male);
             add(m_col_population_female);
         }
-
+        ~ModelColumns() { std::cout << "ModelColumns::destroy" << std::endl;}
         Gtk::TreeModelColumn<Glib::ustring> m_col_country;
         Gtk::TreeModelColumn<int> m_col_population_total;
         Gtk::TreeModelColumn<int> m_col_population_male;

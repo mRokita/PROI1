@@ -8,13 +8,12 @@ using json = nlohmann::json;
 
 size_t curl_write(char *contents, size_t size, size_t nmemb, void *userp)
 {
-    ((std::string*)userp)->append((char*)contents, size * nmemb);
+    ((std::string*)userp)->append(contents, size * nmemb);
     return size * nmemb;
 }
 
 json get_api_data(){
     curl_global_init(CURL_GLOBAL_ALL);
-
     CURL* handle = curl_easy_init();
     std::string buffer;
     curl_easy_setopt(handle, CURLOPT_URL, "http://api.population.io/1.0/population/2019/aged/18/");
@@ -31,5 +30,7 @@ int main(int argc, char *argv[]) {
 
     MainWindow *window = new MainWindow(get_api_data());
 
-    return app->run(*window);
+    int code = app->run(*window);
+    delete window;
+    return code;
 }
