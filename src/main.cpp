@@ -15,13 +15,12 @@ size_t curl_write(char *contents, size_t size, size_t nmemb, void *userp)
 json get_api_data(){
     curl_global_init(CURL_GLOBAL_ALL);
     CURL* handle = curl_easy_init();
-    std::string buffer;
+    std::string *buffer;
     curl_easy_setopt(handle, CURLOPT_URL, "http://api.population.io/1.0/population/2019/aged/18/");
     curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, curl_write);
-    curl_easy_setopt(handle, CURLOPT_WRITEDATA, &buffer);
+    curl_easy_setopt(handle, CURLOPT_WRITEDATA, buffer);
     curl_easy_perform(handle);
-    std::cout << buffer << std::endl;
-    json j = json::parse(buffer);
+    json j = json::parse(*buffer);
     return j;
 }
 
